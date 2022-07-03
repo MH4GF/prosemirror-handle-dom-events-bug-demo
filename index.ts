@@ -14,13 +14,18 @@ const mySchema = new Schema({
 
 const myPlugin = new Plugin({
   props: {
+    // Type '{ mousedown: (_view: EditorView, _event: MouseEvent) => true; }' is not assignable to type '{ [x: string]: ((view: EditorView, event: Event) => boolean | void) | undefined; fullscreenchange?: ((view: EditorView, event: Event) => boolean | void) | undefined; ... 98 more ...; wheel?: ((view: EditorView, event: WheelEvent) => boolean | void) | undefined; }'.
+    //  Property 'mousedown' is incompatible with index signature.
+    //  Type '(_view: EditorView, _event: MouseEvent) => true' is not assignable to type '(view: EditorView, event: Event) => boolean | void'.
+    //    Types of parameters '_event' and 'event' are incompatible.
+    //      Type 'Event' is missing the following properties from type 'MouseEvent': altKey, button, buttons, clientX, and 21 more.ts(2322)
     handleDOMEvents: {
       mousedown: (_view, _event) => {
-        return true
-      }
-    }
-  }
-})
+        return true;
+      },
+    },
+  },
+});
 
 // @ts-ignore
 window.view = new EditorView(document.querySelector("#editor"), {
