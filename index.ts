@@ -1,4 +1,4 @@
-import { EditorState } from "prosemirror-state";
+import { EditorState, Plugin } from "prosemirror-state";
 import { EditorView } from "prosemirror-view";
 import { Schema, DOMParser } from "prosemirror-model";
 import { schema } from "prosemirror-schema-basic";
@@ -12,12 +12,22 @@ const mySchema = new Schema({
   marks: schema.spec.marks,
 });
 
+const myPlugin = new Plugin({
+  props: {
+    handleDOMEvents: {
+      mousedown: (_view, _event) => {
+        return true
+      }
+    }
+  }
+})
+
 // @ts-ignore
 window.view = new EditorView(document.querySelector("#editor"), {
   state: EditorState.create({
     doc: DOMParser.fromSchema(mySchema).parse(
       document.querySelector("#content")!
     ),
-    plugins: exampleSetup({ schema: mySchema }),
+    plugins: [...exampleSetup({ schema: mySchema }), myPlugin],
   }),
 });
